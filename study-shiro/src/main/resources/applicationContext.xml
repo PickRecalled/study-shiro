@@ -6,7 +6,7 @@
 	-->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="cacheManager" ref="cacheManager"/>
-		<property name="realm" ref="jdbcRealm"/>
+		<property name="authenticator" ref="authenticator"/>
 	</bean>
 
 	<!--
@@ -17,16 +17,37 @@
 		<property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
 	</bean>
 
+	<!-- 多Realm的认证器 -->
+	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+		<property name="realms">
+			<list>
+				<ref bean="md5Realm"/>
+				<ref bean="sha1Realm"/>
+			</list>
+		</property>
+	</bean>
+
 	<!--
 		3. 配置 Realm
 		3.1 直接配置实现了 org.apache.shiro.realm.Realm 接口的 bean
 	-->
-	<bean id="jdbcRealm" class="com.summer.shiro.relms.ShiroRealm">
+	<bean id="md5Realm" class="com.summer.shiro.realms.Md5Realm">
 		<!-- 配置凭证匹配器 -->
 		<property name="credentialsMatcher">
 			<!-- 指定加密次数为1024次与MD5加密方式的HashedCredentialsMatcher -->
 			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 				<property name="hashAlgorithmName" value="MD5"/>
+				<property name="hashIterations" value="1024"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="sha1Realm" class="com.summer.shiro.realms.Sha1Realm">
+		<!-- 配置凭证匹配器 -->
+		<property name="credentialsMatcher">
+			<!-- 指定加密次数为1024次与SHA1加密方式的HashedCredentialsMatcher -->
+			<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+				<property name="hashAlgorithmName" value="SHA1"/>
 				<property name="hashIterations" value="1024"/>
 			</bean>
 		</property>
