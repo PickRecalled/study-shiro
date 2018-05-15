@@ -21,7 +21,7 @@
 		3. 配置 Realm
 		3.1 直接配置实现了 org.apache.shiro.realm.Realm 接口的 bean
 	-->
-	<bean id="jdbcRealm" class="com.summer.shiro.relms.ShiroRealm">
+	<bean id="jdbcRealm" class="com.summer.shiro.realms.ShiroRealm">
 		<!-- 配置凭证匹配器 -->
 		<property name="credentialsMatcher">
 			<!-- 指定加密次数为1024次与MD5加密方式的HashedCredentialsMatcher -->
