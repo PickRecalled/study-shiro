@@ -7,6 +7,12 @@
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="cacheManager" ref="cacheManager"/>
 		<property name="authenticator" ref="authenticator"/>
+		<property name="realms">
+			<list>
+				<ref bean="md5Realm"/>
+				<ref bean="sha1Realm"/>
+			</list>
+		</property>
 	</bean>
 
 	<!--
@@ -19,12 +25,6 @@
 
 	<!-- 多Realm的认证器 -->
 	<bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
-		<property name="realms">
-			<list>
-				<ref bean="md5Realm"/>
-				<ref bean="sha1Realm"/>
-			</list>
-		</property>
 		<!-- 配置Realm的认证策略 -->
 		<property name="authenticationStrategy">
 			<!--
@@ -32,7 +32,7 @@
 				AtLeastOneSuccessfulStrategy：只要有一个Realm验证成功即可，和FirstSuccessfulStrategy 不同，将返回所有Realm身份验证成功的认证信息；
 				AllSuccessfulStrategy：所有Realm验证成功才算成功，且返回所有Realm身份验证成功的认证信息，如果有一个失败就失败了。
 			-->
-			<bean class="org.apache.shiro.authc.pam.AllSuccessfulStrategy"></bean>
+			<bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"></bean>
 		</property>
 	</bean>
 
