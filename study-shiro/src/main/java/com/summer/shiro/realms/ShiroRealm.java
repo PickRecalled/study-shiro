@@ -1,4 +1,4 @@
-package com.summer.shiro.relms;
+package com.summer.shiro.realms;
 
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
