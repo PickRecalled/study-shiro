@@ -43,9 +43,9 @@ public class Sha1Realm extends AuthenticatingRealm {
 		// Object credentials = "123456";//将明文密码使用下面的main方法加密成密文
 		Object credentials = null; // "fc1709d0a95a6be30bc5926fdb7f22f4";
 		if ("admin".equals(username)) {
-			credentials = "ce2f6417c7e1d32c1d81a797ee0b499f87c5de06";
+			credentials = "ce2f6417c7e1d32c1d81a797ee0b499f87c5de06----";
 		} else if ("user".equals(username)) {
-			credentials = "073d4c3ae812935f23cb3f2a71943f49e082a718";
+			credentials = "073d4c3ae812935f23cb3f2a71943f49e082a718----";
 		}
 
 		// 3). realmName: 当前 realm 对象的 name. 调用父类的 getName() 方法即可
@@ -55,7 +55,8 @@ public class Sha1Realm extends AuthenticatingRealm {
 		ByteSource credentialsSalt = ByteSource.Util.bytes(username);
 
 		SimpleAuthenticationInfo info = null; // new SimpleAuthenticationInfo(principal, credentials, realmName);
-		info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
+		// info = new SimpleAuthenticationInfo(principal, credentials, credentialsSalt, realmName);
+		info = new SimpleAuthenticationInfo("sha1Realm-userName", credentials, credentialsSalt, realmName);
 		return info;
 	}
 
