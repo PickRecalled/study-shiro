@@ -4,13 +4,25 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.summer.shiro.services.ShiroService;
+
 @Controller
 @RequestMapping("/shiro")
 public class ShiroHandler {
+
+	@Autowired
+	private ShiroService shiroService;
+
+	@RequestMapping("/testShiroAnnotation")
+	public String testShiroAnnotation() {
+		shiroService.testAnnotationPermissions();
+		return "redirect:/list.jsp";
+	}
 
 	@RequestMapping("/login")
 	public String login(@RequestParam("username") String username, @RequestParam("password") String password) {
@@ -22,7 +34,7 @@ public class ShiroHandler {
 			// rememberme
 			token.setRememberMe(true);
 			try {
-				//打印login方法中token的哈希码是否与自定义实现ShiroRealm中doGetAuthenticationInfo方法中token的哈希码是否一至
+				// 打印login方法中token的哈希码是否与自定义实现ShiroRealm中doGetAuthenticationInfo方法中token的哈希码是否一至
 				System.out.println("shiroHandlerLogin:" + token.hashCode());
 				// 执行登录.
 				currentUser.login(token);
