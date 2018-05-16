@@ -1,14 +1,22 @@
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags"%>
 <html>
 <body>
 	<h2>List Page!</h2>
 
-	<br>
-	<br>
-	<a href="admin.jsp">Admin Page</a>
+	Welcome:
+	<shiro:principal></shiro:principal>
 
-	<br>
-	<br>
-	<a href="user.jsp">User Page</a>
+	<shiro:hasRole name="admin">
+		<br>
+		<br>
+		<a href="admin.jsp">Admin Page</a>
+	</shiro:hasRole>
+
+	<shiro:hasRole name="user">
+		<br>
+		<br>
+		<a href="user.jsp">User Page</a>
+	</shiro:hasRole>
 
 	<br>
 	<br>
