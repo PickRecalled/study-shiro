@@ -1,5 +1,8 @@
 package com.summer.shiro.realms;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -7,13 +10,17 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.apache.shiro.realm.AuthenticatingRealm;
+import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 
-public class Md5Realm extends AuthenticatingRealm {
+public class Md5Realm extends AuthorizingRealm {
 
 	@Override
+	// 认证
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		System.out.println("md5Realm-doGetAuthenticationInfo-token:" + token.hashCode());
 		// 1. 把 AuthenticationToken 转换为 UsernamePasswordToken
@@ -59,6 +66,29 @@ public class Md5Realm extends AuthenticatingRealm {
 		return info;
 	}
 
+	@Override
+	// 授权会被 shiro 回调的方法
+	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+		System.out.println("md5Realm-doGetAuthorizationInfo-token:" + principals.hashCode());
+		// 1. 从 PrincipalCollection 中来获取登录用户的信息
+		Object principal = principals.getPrimaryPrincipal();
+
+		// 2. 利用登录的用户的信息来获取当前用户的角色或权限(可能需要查询数据库)
+		Set<String> roles = new HashSet<>();
+
+		// admin用户登录拥有admin与user权限，user用户登录只有user权限
+		roles.add("user");
+		if ("admin".equals(principal)) {
+			roles.add("admin");
+		}
+
+		// 3. 创建 SimpleAuthorizationInfo, 并设置其 reles 属性.
+		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
+
+		// 4. 返回 SimpleAuthorizationInfo 对象.
+		return info;
+	}
+
 	public static void main(String[] args) {
 		// 算法
 		String algorithmName = "MD5";
@@ -73,4 +103,5 @@ public class Md5Realm extends AuthenticatingRealm {
 		// 输出结果 fc1709d0a95a6be30bc5926fdb7f22f4
 		System.out.println("result:" + result);
 	}
+
 }
