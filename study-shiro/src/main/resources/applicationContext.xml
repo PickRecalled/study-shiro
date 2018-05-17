@@ -76,7 +76,6 @@
 		<property name="securityManager" ref="securityManager"/>
 	</bean>
 
-	<property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
 
 	<!--
 		6. 配置 ShiroFilter.
@@ -88,6 +87,9 @@
 		<property name="loginUrl" value="/login.jsp"/>
 		<property name="successUrl" value="/list.jsp"/>
 		<property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+
+		<property name="filterChainDefinitionMap" ref="filterChainDefinitionMap"/>
+
 		<!--
 			6.2 配置哪些页面需要受保护，以及访问这些页面需要的权限.
 			1). anon 可以被匿名访问
