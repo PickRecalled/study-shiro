@@ -1,5 +1,7 @@
 package com.summer.shiro.handlers;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,7 +21,9 @@ public class ShiroHandler {
 	private ShiroService shiroService;
 
 	@RequestMapping("/testShiroAnnotation")
-	public String testShiroAnnotation() {
+	public String testShiroAnnotation(HttpSession session) {
+		// 在Controller层使用HttpSession存放一个值，再Service层通过Shiro的session获取
+		session.setAttribute("sessionKey", "value12345");
 		shiroService.testAnnotationPermissions();
 		return "redirect:/list.jsp";
 	}
